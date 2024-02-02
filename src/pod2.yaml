@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: twopods
+  labels:
+    env: test
+spec:
+  containers:
+  - name: myfirstflask
+    image: europe-west4-docker.pkg.dev/cloudparis1/registry/visit-flask
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        cpu: "200m"
+      limits:
+        cpu: "200m"
+  - name: redis
+    image: redis
+    ports:
+      - containerPort: 6379
+    volumeMounts:
+      - mountPath: /data
+        name: data
+  volumes:
+    - name: data
+      hostPath:
+        path: /tmp/data
+        type: DirectoryOrCreate
